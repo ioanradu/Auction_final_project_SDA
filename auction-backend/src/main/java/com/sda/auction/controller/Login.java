@@ -1,5 +1,6 @@
 package com.sda.auction.controller;
 
+import com.sda.auction.dto.LoginDto;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.model.User;
 import com.sda.auction.service.UserService;
@@ -12,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/register") // acesta este path-ul
-public class Registration {
+@RequestMapping("/api/login") // acesta este path-ul
+public class Login {
     @Autowired
     UserService userService;
     @Autowired
@@ -25,10 +26,10 @@ public class Registration {
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json") // serveste un requset de tip post, consuma un json si produce un json
-    public ResponseEntity<UserDto> post(@Valid @RequestBody UserDto userDto){
-        userDtoValidator.validate(userDto);
-        UserDto userDtoResult = userService.addUser(userDto);
-        return new ResponseEntity<>(userDtoResult, HttpStatus.OK);
+    public ResponseEntity<LoginDto> post(@Valid @RequestBody LoginDto loginDto){
+
+        LoginDto loginDtoResult = userService.login(loginDto);
+        return new ResponseEntity<>(loginDtoResult, HttpStatus.OK);
     }
 
 
