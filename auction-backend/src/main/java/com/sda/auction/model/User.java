@@ -3,6 +3,7 @@ package com.sda.auction.model;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -22,9 +23,13 @@ public class User {
     @Column
     private String email;
 
-    @ManyToMany // unidirectional, deci in clasa Role nu avem nicio adnotare.
+    @ManyToMany(cascade = CascadeType.ALL) // unidirectional, deci in clasa Role nu avem nicio adnotare.
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet();
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 }

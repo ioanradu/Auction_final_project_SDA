@@ -3,7 +3,9 @@ package com.sda.auction.service.impl;
 import com.sda.auction.dto.LoginDto;
 import com.sda.auction.dto.UserDto;
 import com.sda.auction.mapper.UserMapper;
+import com.sda.auction.model.Role;
 import com.sda.auction.model.User;
+import com.sda.auction.repository.RoleRepository;
 import com.sda.auction.repository.UserRepository;
 import com.sda.auction.service.SecurityService;
 import com.sda.auction.service.UserService;
@@ -20,13 +22,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private SecurityService securityService;
+    private RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, SecurityService securityService) {
+    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, SecurityService securityService, RoleRepository roleRepository) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -35,10 +39,19 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.convert(userDto);
         // hash-uim parola
         encodePassword(user);
+        addUserRoles(user);
         //persistam in baza de date
         User savedUser = userRepository.save(user);
         // convertim entitatea persistata din baza de date in dto pentru a o intoarce
         return userMapper.convert(savedUser);
+    }
+
+    private void addUserRoles(User user) { // aduce rolul la un user , poate fi si admin si user
+        Role role = roleRepository.findByRoleName("user");
+        user.addRole(role);
+
+        Role admin = roleRepository.findByRoleName("admin");
+        user.addRole(admin);
     }
 
     @Override
@@ -52,8 +65,9 @@ public class UserServiceImpl implements UserService {
         if(user == null){ // mai intai verificam daca exista userul
             throw new RuntimeException("Email address not exstent!");
         }
+        // verificam daca parolele sunt egale
         if(securityService.passwordMatch(loginDto, user)){
-            return securityService.createDtoWithJwt(loginDto); // returneaza un Dto cu jwt
+            return securityService.createDtoWithJwt(user); // returneaza un Dto cu jwt
         }
         throw new RuntimeException("Passwords don't match");
     }

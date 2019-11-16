@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor // creaza constructor default*/
 public class LoginDto {
 
-    private Integer id; // nu trebuie validat
+    private String jwd;
 
     @NotEmpty(message = "{error.user.email.notEmpty}")
     @Email(message = "{error.user.email.regex}")

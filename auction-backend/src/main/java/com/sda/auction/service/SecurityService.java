@@ -7,5 +7,5 @@ public interface SecurityService {
 
     boolean passwordMatch(LoginDto userDto, User user); // userDto e loginul
 
-    LoginDto createDtoWithJwt(LoginDto loginDto);
+    LoginDto createDtoWithJwt(User user);
 }
