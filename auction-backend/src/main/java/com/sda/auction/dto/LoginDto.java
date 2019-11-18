@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor // creaza constructor default*/
 public class LoginDto {
 
-    private String jwd;
+    private String jwt;
 
     @NotEmpty(message = "{error.user.email.notEmpty}")
     @Email(message = "{error.user.email.regex}")

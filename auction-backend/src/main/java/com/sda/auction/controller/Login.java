@@ -1,8 +1,6 @@
 package com.sda.auction.controller;
 
 import com.sda.auction.dto.LoginDto;
-import com.sda.auction.dto.UserDto;
-import com.sda.auction.model.User;
 import com.sda.auction.service.UserService;
 import com.sda.auction.validator.UserDtoValidator;
 import org.springframework.beans.factory.annotation.Autowired;

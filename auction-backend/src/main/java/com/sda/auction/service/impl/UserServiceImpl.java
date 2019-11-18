@@ -62,11 +62,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public LoginDto login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail()); // returneaza tot userul cu parola hash-uita din baza de date
-        if(user == null){ // mai intai verificam daca exista userul
+        if (user == null) { // mai intai verificam daca exista userul
             throw new RuntimeException("Email address not exstent!");
         }
         // verificam daca parolele sunt egale
-        if(securityService.passwordMatch(loginDto, user)){
+        if (securityService.passwordMatch(loginDto, user)) {
             return securityService.createDtoWithJwt(user); // returneaza un Dto cu jwt
         }
         throw new RuntimeException("Passwords don't match");

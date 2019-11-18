@@ -53,10 +53,8 @@ function register() {
                 const errorMessage = jqXhr.responseJSON.message;
                 console.log("singura eroare: " + errorMessage);
             }
-
         }
     });
-
 }
 
 
