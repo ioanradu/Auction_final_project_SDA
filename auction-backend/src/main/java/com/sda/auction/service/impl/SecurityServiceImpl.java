@@ -41,10 +41,16 @@ public class SecurityServiceImpl implements SecurityService {
     @Override
     public boolean isValid(ServletRequest servletRequest) {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
+
         String requestURL = httpServletRequest.getRequestURI();
         String jwt = resolveToken(httpServletRequest);
-        return tokenProvider.validate(jwt, requestURL);
 
+           boolean result = tokenProvider.validate(jwt, requestURL);
+           if (result && jwt != null) {
+               String ownerEmail = tokenProvider.getEmailFrom(jwt);
+               httpServletRequest.setAttribute("ownerEmail", ownerEmail);
+           }
+           return result;
     }
 
     // "Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"
