@@ -33,4 +33,6 @@ public class ItemDto {
     @NotEmpty
     private String endDate;
 
+    @NotEmpty
+    private String photo;
 }

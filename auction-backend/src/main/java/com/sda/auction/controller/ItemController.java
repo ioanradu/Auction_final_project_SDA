@@ -29,10 +29,11 @@ public class ItemController {
 
 
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ItemDto> post(@Valid @RequestBody ItemDto itemDto, HttpServletRequest request) throws ParseException {
+    public ResponseEntity<ItemDto> post(@Valid @RequestBody ItemDto itemDto,
+                                        HttpServletRequest request) throws ParseException {
 
-        String ownerEmail = (String) request.getAttribute("ownerEmail");
-        ItemDto itemDtoResult = itemService.addItem(itemDto, ownerEmail);
+        String userEmail = (String) request.getAttribute("userEmail");
+        ItemDto itemDtoResult = itemService.addItem(itemDto, userEmail);
 
         return new ResponseEntity<>(itemDtoResult, HttpStatus.OK);
     }
