@@ -1,5 +1,6 @@
 package com.sda.auction.service.impl;
 
+import com.sda.auction.dto.HeaderDto;
 import com.sda.auction.dto.LoginDto;
 import com.sda.auction.jwt.TokenProvider;
 import com.sda.auction.model.User;
@@ -58,6 +59,7 @@ public class SecurityServiceImpl implements SecurityService {
         return tokenProvider.validate(jwt, requestURL);
     }
 
+
     private boolean isPublicPath(String requestURL) {
         String[] publicPathsArray = publicPaths.split(",");
         for (String path : publicPathsArray) {
@@ -75,6 +77,12 @@ public class SecurityServiceImpl implements SecurityService {
 
         String userEmail = tokenProvider.getEmailFrom(jwt);
         httpServletRequest.setAttribute("userEmail", userEmail);
+    }
+
+    @Override
+    public HeaderDto getHeaderDtoFrom(HttpServletRequest request) {
+        String jwt = resolveToken(request);
+        return tokenProvider.getHeaderDtoFrom(jwt);
     }
 
     //	"Bearer adsadsafisafsakjskjdsa.sadjsaksaksajk.sakjddsakdsakdsa"

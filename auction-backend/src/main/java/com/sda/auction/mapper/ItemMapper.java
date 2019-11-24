@@ -1,15 +1,14 @@
 package com.sda.auction.mapper;
 
 import com.sda.auction.dto.ItemDto;
-import com.sda.auction.dto.UserDto;
 import com.sda.auction.model.Item;
-import com.sda.auction.model.User;
 import com.sda.auction.util.DateConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.text.ParseException;
 import java.util.Base64;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ItemMapper {
