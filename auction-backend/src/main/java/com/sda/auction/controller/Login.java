@@ -19,12 +19,13 @@ public class Login {
     private UserDtoValidator userDtoValidator;
 
     @GetMapping
-    public ResponseEntity get(){
+    public ResponseEntity get() {
         return new ResponseEntity<String>("Hello World!", HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json") // serveste un requset de tip post, consuma un json si produce un json
-    public ResponseEntity<LoginDto> post(@Valid @RequestBody LoginDto loginDto){
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    // serveste un requset de tip post, consuma un json si produce un json
+    public ResponseEntity<LoginDto> post(@Valid @RequestBody LoginDto loginDto) {
 
         LoginDto loginDtoResult = userService.login(loginDto);
         return new ResponseEntity<>(loginDtoResult, HttpStatus.OK);

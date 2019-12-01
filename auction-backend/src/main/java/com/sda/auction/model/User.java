@@ -1,5 +1,8 @@
 package com.sda.auction.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,16 +21,18 @@ import javax.persistence.Table;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name = "user")
 @Data
+@EqualsAndHashCode(exclude = "items")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int id;
+    private int userId;
 
     @Column
     private String firstName;
@@ -60,5 +65,9 @@ public class User {
             result.add(role.getRoleName());
         }
         return result;
+    }
+
+    public String getFriendlyName() {
+        return "Mr. " + firstName + " " + lastName;
     }
 }

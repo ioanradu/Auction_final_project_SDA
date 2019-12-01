@@ -16,16 +16,18 @@ import javax.validation.Valid;
 public class Registration {
     @Autowired
     UserService userService;
+
     @Autowired
     private UserDtoValidator userDtoValidator;
 
     @GetMapping
-    public ResponseEntity get(){
+    public ResponseEntity get() {
         return new ResponseEntity<String>("Hello World!", HttpStatus.OK);
     }
 
-    @PostMapping(consumes = "application/json", produces = "application/json") // serveste un requset de tip post, consuma un json si produce un json
-    public ResponseEntity<UserDto> post(@Valid @RequestBody UserDto userDto){
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    // serveste un requset de tip post, consuma un json si produce un json
+    public ResponseEntity<UserDto> post(@Valid @RequestBody UserDto userDto) {
         userDtoValidator.validate(userDto);
         UserDto userDtoResult = userService.addUser(userDto);
         return new ResponseEntity<>(userDtoResult, HttpStatus.OK);

@@ -9,11 +9,9 @@ import com.sda.auction.repository.RoleRepository;
 import com.sda.auction.repository.UserRepository;
 import com.sda.auction.service.SecurityService;
 import com.sda.auction.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,37 +20,36 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private SecurityService securityService;
-    private RoleRepository roleRepository;
+
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, SecurityService securityService, RoleRepository roleRepository) {
+    public UserServiceImpl(UserMapper userMapper,
+                           UserRepository userRepository,
+                           BCryptPasswordEncoder passwordEncoder,
+                           SecurityService securityService) {
         this.userMapper = userMapper;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.securityService = securityService;
-        this.roleRepository = roleRepository;
     }
+
 
     @Override
     public UserDto addUser(UserDto userDto) {
+
         //convertim dto in entity
         User user = userMapper.convert(userDto);
-        // hash-uim parola
+
         encodePassword(user);
-        addUserRoles(user);
+        securityService.addUserRoles(user);
+
         //persistam in baza de date
         User savedUser = userRepository.save(user);
-        // convertim entitatea persistata din baza de date in dto pentru a o intoarce
+
+        //convertim entitatea persistata inapoi in dto pentru a o intoarce care requester
         return userMapper.convert(savedUser);
     }
 
-    private void addUserRoles(User user) { // aduce rolul la un user , poate fi si admin si user
-        Role role = roleRepository.findByRoleName("user");
-        user.addRole(role);
-
-        Role admin = roleRepository.findByRoleName("admin");
-        user.addRole(admin);
-    }
 
     @Override
     public User findByEmail(String email) {
@@ -61,15 +58,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginDto login(LoginDto loginDto) {
-        User user = userRepository.findByEmail(loginDto.getEmail()); // returneaza tot userul cu parola hash-uita din baza de date
-        if (user == null) { // mai intai verificam daca exista userul
-            throw new RuntimeException("Email address not exstent!");
+        User user = userRepository.findByEmail(loginDto.getEmail());
+        if (user == null) {
+            throw new RuntimeException("User account with this email address not existent!");
         }
-        // verificam daca parolele sunt egale
         if (securityService.passwordMatch(loginDto, user)) {
-            return securityService.createDtoWithJwt(user); // returneaza un Dto cu jwt
+            return securityService.createDtoWithJwt(user);
         }
-        throw new RuntimeException("Passwords don't match");
+        throw new RuntimeException("Passwords do not match!");
     }
 
     private void encodePassword(User user) {
@@ -78,6 +74,4 @@ public class UserServiceImpl implements UserService {
         //set the encoded password to user entity
         user.setPassword(passwordEncoded);
     }
-
-
 }

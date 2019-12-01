@@ -7,11 +7,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
+
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

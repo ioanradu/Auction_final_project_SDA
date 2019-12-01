@@ -6,16 +6,19 @@ import java.util.Set;
 import javax.persistence.*;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "item")
 @Data
+@EqualsAndHashCode(exclude = "user")
 public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
-    private int id;
+    private int itemId;
 
     @Column
     private String name;
@@ -35,6 +38,7 @@ public class Item {
     @Column
     private String photo;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User owner;
@@ -48,4 +52,7 @@ public class Item {
 //			inverseJoinColumns = @JoinColumn(name = "role_id"))
 //	private Set<Role> roles = new HashSet<>();
 
+    public String getOwnersName() {
+        return owner.getFriendlyName();
+    }
 }

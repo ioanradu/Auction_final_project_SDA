@@ -146,12 +146,49 @@ function addItemOnPage(itemDto) {
     $(".itemList").append(newItem);
 }
 
-function getAllItems(isAdmin) {
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+        }
+    }
+};
+
+function displayItemForAdmin(itemDto) {
+    $(".itemName").html(itemDto.name);
+    $(".itemCategory").html(itemDto.category);
+    $(".itemPrice").html("$" + itemDto.startingPrice);
+    $(".itemImage").attr("src", itemDto.photo);
+    $(".itemDescription").html(itemDto.description);
+    $(".itemStartDate").html(itemDto.startDate);
+    $(".itemEndDate").html(itemDto.endDate);
+    $(".itemOwner").html(itemDto.owner);
+}
+
+function displayItemForUser(itemDto) {
+    $(".itemName").html(itemDto.name);
+    $(".itemCategory").html(itemDto.category);
+    $(".itemPrice").html("$" + itemDto.startingPrice);
+    $(".itemImage").attr("src", itemDto.photo);
+    $(".itemDescription").html(itemDto.description);
+    $(".itemStartDate").html(itemDto.startDate);
+    $(".itemEndDate").html(itemDto.endDate);
+}
+
+function getItemById(isAdmin) {
     let url = "";
+    const itemId = getUrlParameter("id");
     if (isAdmin) {
-        url = 'http://localhost:8080/api/admin/item';
+        url = 'http://localhost:8080/api/admin/item/' + itemId;
     } else {
-        url = 'http://localhost:8080/api/user/item'
+        url = 'http://localhost:8080/api/user/item/' + itemId;
     }
     $.ajax({
         url: url,
@@ -159,15 +196,28 @@ function getAllItems(isAdmin) {
         headers: createAuthorizationHeader(),
         type: 'get',
         contentType: 'application/json',
-        success: function (itemList, textStatus, jQxhr) {
-            console.log(itemList);
-            itemList.forEach(addItemOnPage);
-
+        success: function (itemDto, textStatus, jQxhr) {
+            if (isAdmin) {
+                displayItemForAdmin(itemDto);
+            } else {
+                console.log(itemDto);
+                displayItemForUser(itemDto);
+            }
+            displayAccordingToRole(isAdmin);
         },
         error: function (jqXhr, textStatus, errorThrown) {
             console.log(jqXhr);
         }
-    });
+    })
+    ;
+}
+
+function displayAccordingToRole(isAdmin) {
+    if (isAdmin) {
+        $(".adminOnly").show();
+    } else {
+        $(".userOnly").show();
+    }
 }
 
 function setHeaderForUser() {
@@ -180,14 +230,8 @@ function setHeaderForUser() {
         success: function (headerDto, textStatus, jQxhr) {
             console.log(headerDto);
             $(".helloMessage").text("Hello, " + headerDto.firstName + "!");
-            if (headerDto.admin) {
-                $("li.nav-item.adminOnly").show();
-
-            } else {
-                $("li.nav-item.userOnly").show();
-
-            }
-            getAllItems(headerDto.admin);
+            displayAccordingToRole(headerDto.admin);
+            getItemById(headerDto.admin);
         },
         error: function (jqXhr, textStatus, errorThrown) {
             console.log(jqXhr);

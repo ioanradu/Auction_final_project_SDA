@@ -5,6 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,4 +36,10 @@ public class ItemDto {
 
     @NotEmpty
     private String photo;
+
+    private String owner;
+
+    public void resetOwner() {
+        owner = null;
+    }
 }

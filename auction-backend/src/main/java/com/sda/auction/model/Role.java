@@ -10,10 +10,11 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "role_id")
-    private int id;
+    private int roleId;
 
     @Column
     private String roleName;

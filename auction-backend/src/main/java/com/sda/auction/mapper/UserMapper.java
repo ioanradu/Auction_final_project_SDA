@@ -17,12 +17,15 @@ public class UserMapper {
     }
 
     public UserDto convert(User user) {
+
         UserDto userDto = new UserDto();
         userDto.setEmail(user.getEmail());
         userDto.setPassword(user.getPassword());
         userDto.setFirstName(user.getFirstName());
         userDto.setLastName(user.getLastName());
-        userDto.setId(user.getId());
+
+        userDto.setId(user.getUserId());
+
         return userDto;
     }
 }

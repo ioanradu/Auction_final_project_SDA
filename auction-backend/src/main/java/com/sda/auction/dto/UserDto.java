@@ -10,7 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@Data // creaza hidden getter and hidden setter
+@Data // creaza hidden getter and setter
 @EqualsAndHashCode
 /*@AllArgsConstructor // creaza toate variantele de constructor
 @NoArgsConstructor // creaza constructor default*/

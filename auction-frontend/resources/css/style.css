@@ -7,19 +7,29 @@ form#login_form p.error {
     padding-left: 12px;
     font-size: 14px;
 }
+
 form#register_form p.success,
 form#login_form p.success {
     color: green;
 }
 
-section.addItem_box_area .main-div{
+section.addItem_box_area .main-div {
     margin: 0 auto;
 }
-.helloMessage{
+
+.helloMessage {
     padding-left: 5px;
 }
 
-li.nav-item.userOnly,
-li.nav-item.adminOnly{
+.userOnly,
+.adminOnly {
     display: none;
+}
+
+.itemPattern {
+    display: none;
+}
+
+.s_product_text .list li a span.itemOwner {
+    width: 200px;
 }
