@@ -31,17 +31,21 @@ public class AdminItemController {
     public ResponseEntity<ItemDto> post(@Valid @RequestBody ItemDto itemDto,
                                         HttpServletRequest request) throws ParseException {
 
-        String userEmail = (String) request.getAttribute("userEmail");
+        System.out.println(itemDto);
+        String userEmail = (String) request.getAttribute("userEmail"); // extragem din request adresa de email
+        System.out.println(userEmail);
         ItemDto itemDtoResult = itemService.addItem(itemDto, userEmail);
 
         return new ResponseEntity<>(itemDtoResult, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemDto> getById(@PathVariable Integer id) {
+    public ResponseEntity<ItemDto> getById(@PathVariable Integer id, HttpServletRequest request) {
         System.out.println("Item id  = " + id);
+        String userEmail = (String) request.getAttribute("userEmail");
+        System.out.println(userEmail);
+        ItemDto itemDto = itemService.findByIdFor(id, userEmail);
 
-        ItemDto itemDto = itemService.findById(id);
         return new ResponseEntity<>(itemDto, HttpStatus.OK);
     }
 

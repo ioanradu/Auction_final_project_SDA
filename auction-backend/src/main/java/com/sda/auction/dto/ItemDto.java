@@ -5,7 +5,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,6 +23,8 @@ public class ItemDto {
 
     @Positive
     private int startingPrice;
+    
+    private int currentPrice;
 
     @NotEmpty
     private String category;
@@ -42,4 +43,6 @@ public class ItemDto {
     public void resetOwner() {
         owner = null;
     }
+
+    private int myLastBidValue;
 }

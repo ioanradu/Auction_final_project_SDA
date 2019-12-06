@@ -33,3 +33,10 @@ section.addItem_box_area .main-div {
 .s_product_text .list li a span.itemOwner {
     width: 200px;
 }
+
+.addSuccessful{
+    color: green;
+}
+.addSuccessful.error{
+    color: red;
+}

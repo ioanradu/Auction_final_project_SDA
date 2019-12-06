@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,12 +20,12 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(exclude = {"user", "item"})
-public class Bid {
+public class Bid implements Comparable<Bid> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bid_id")
-    private int bidId;
+    private int id;
 
     @Column
     private int price;
@@ -41,4 +40,14 @@ public class Bid {
     @JoinColumn(name = "item_id")
     private Item item;
 
+
+    @Override
+    public int compareTo(Bid o) {
+        return this.price - o.price;
+
+    }
+
+    public String getUserEmail() {
+        return user.getEmail();
+    }
 }

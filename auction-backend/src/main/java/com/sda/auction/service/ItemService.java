@@ -7,8 +7,13 @@ import java.util.List;
 public interface ItemService {
 
     ItemDto addItem(ItemDto itemDto, String ownerEmail) throws ParseException;
+
+
     List<ItemDto> findAll();
-    ItemDto findById(Integer id);
+
+    ItemDto findByIdFor(Integer id, String userEmail);
+
     List<ItemDto> findAllForBidding();
-    ItemDto findByIdForUser(Integer id);
+
+    ItemDto findByIdForUser(Integer id, String email);
 }
